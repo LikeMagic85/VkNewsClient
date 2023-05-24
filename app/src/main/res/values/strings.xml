@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">VkNewsClient</string>
     <string name="template_text">Contrary to popular belief, Lorem Ipsum is not simply random text</string>
+    <string name="navigation_item_main">Главная</string>
+    <string name="navigation_item_favorite">Избранные</string>
+    <string name="navigation_item_profile">Профиль</string>
 </resources>
