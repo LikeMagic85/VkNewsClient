@@ -13,32 +13,32 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.like_magic.vknewsclient.MainViewModel
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.ui.theme.NavigationItem
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainViewModel) {
 
-    val feedPost = remember {
-        mutableStateOf(FeedPost())
-    }
+    val feedPost = viewModel.feedPost.observeAsState(FeedPost())
 
     Scaffold(
         bottomBar = {
-            NavigationBar{
-                val selectedItemPosition =  remember {
+            NavigationBar {
+                val selectedItemPosition = remember {
                     mutableStateOf(0)
                 }
                 val items =
                     listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
-                items.forEachIndexed {index, item ->
+                items.forEachIndexed { index, item ->
                     NavigationBarItem(
                         selected = selectedItemPosition.value == index,
                         onClick = { selectedItemPosition.value = index },
@@ -54,7 +54,8 @@ fun MainScreen() {
                             selectedTextColor = MaterialTheme.colorScheme.onPrimary,
                             unselectedTextColor = MaterialTheme.colorScheme.onSecondary,
                             indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                LocalAbsoluteTonalElevation.current)
+                                LocalAbsoluteTonalElevation.current
+                            )
                         )
                     )
                 }
@@ -64,19 +65,10 @@ fun MainScreen() {
         PostCard(
             modifier = Modifier.padding(8.dp),
             feedPost = feedPost.value,
-            onStatisticsItemClickListener = { newItem->
-                val oldStatics = feedPost.value.statistic
-                val newStatistics = oldStatics.toMutableList().apply {
-                    replaceAll{oldItem ->
-                        if(oldItem.type == newItem.type){
-                            oldItem.copy(count = oldItem.count + 1)
-                        }else {
-                            oldItem
-                        }
-                    }
-                }
-                feedPost.value = feedPost.value.copy(statistic = newStatistics)
-            }
+            onViewClickListener = viewModel::updateCount,
+            onShareClickListener = viewModel::updateCount,
+            onCommentClickListener = viewModel::updateCount,
+            onLikeClickListener = viewModel::updateCount
         )
     }
 }

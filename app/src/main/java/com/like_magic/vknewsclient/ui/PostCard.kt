@@ -39,7 +39,10 @@ import java.lang.IllegalStateException
 fun PostCard(
     modifier: Modifier = Modifier,
     feedPost: FeedPost,
-    onStatisticsItemClickListener:(StatisticItem)-> Unit
+    onLikeClickListener:(StatisticItem)-> Unit,
+    onShareClickListener:(StatisticItem)-> Unit,
+    onCommentClickListener:(StatisticItem)-> Unit,
+    onViewClickListener:(StatisticItem)-> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(4.dp),
@@ -67,9 +70,13 @@ fun PostCard(
                 contentScale = ContentScale.FillWidth
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Statistics(feedPost.statistic){
-                onStatisticsItemClickListener(it)
-            }
+            Statistics(
+                items = feedPost.statistic,
+                onCommentClickListener = onCommentClickListener,
+                onLikeClickListener = onLikeClickListener,
+                onShareClickListener = onShareClickListener,
+                onViewClickListener = onViewClickListener
+            )
         }
     }
 
@@ -115,7 +122,10 @@ private fun PostHeader(feedPost: FeedPost) {
 @Composable
 private fun Statistics(
     items:List<StatisticItem>,
-    onItemClickListener: (StatisticItem) -> Unit
+    onLikeClickListener:(StatisticItem)-> Unit,
+    onShareClickListener:(StatisticItem)-> Unit,
+    onCommentClickListener:(StatisticItem)-> Unit,
+    onViewClickListener:(StatisticItem)-> Unit,
 ) {
     Row() {
         Row(modifier = Modifier.weight(1f)) {
@@ -124,7 +134,7 @@ private fun Statistics(
                 iconResId = R.drawable.ic_view_count,
                 text = itemViews.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(itemViews)
+                    onViewClickListener(itemViews)
                 }
             )
         }
@@ -139,21 +149,21 @@ private fun Statistics(
                 iconResId = R.drawable.ic_share,
                 text = itemShares.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(itemShares)
+                    onShareClickListener(itemShares)
                 }
             )
             IconWithText(
                 iconResId = R.drawable.ic_comment,
                 text = itemComments.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(itemComments)
+                    onCommentClickListener(itemComments)
                 }
             )
             IconWithText(
                 iconResId = R.drawable.ic_like,
                 text = itemLikes.count.toString(),
                 onItemClickListener = {
-                    onItemClickListener(itemLikes)
+                    onLikeClickListener(itemLikes)
                 }
             )
         }
