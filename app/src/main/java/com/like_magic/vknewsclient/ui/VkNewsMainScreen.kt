@@ -25,6 +25,11 @@ import com.like_magic.vknewsclient.ui.theme.NavigationItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
+
+    val feedPost = remember {
+        mutableStateOf(FeedPost())
+    }
+
     Scaffold(
         bottomBar = {
             NavigationBar{
@@ -56,6 +61,22 @@ fun MainScreen() {
             }
         }
     ) {
-        PostCard(modifier = Modifier.padding(8.dp), FeedPost())
+        PostCard(
+            modifier = Modifier.padding(8.dp),
+            feedPost = feedPost.value,
+            onStatisticsItemClickListener = { newItem->
+                val oldStatics = feedPost.value.statistic
+                val newStatistics = oldStatics.toMutableList().apply {
+                    replaceAll{oldItem ->
+                        if(oldItem.type == newItem.type){
+                            oldItem.copy(count = oldItem.count + 1)
+                        }else {
+                            oldItem
+                        }
+                    }
+                }
+                feedPost.value = feedPost.value.copy(statistic = newStatistics)
+            }
+        )
     }
 }

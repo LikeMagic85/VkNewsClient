@@ -2,6 +2,7 @@ package com.like_magic.vknewsclient.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +38,8 @@ import java.lang.IllegalStateException
 @Composable
 fun PostCard(
     modifier: Modifier = Modifier,
-    feedPost: FeedPost
+    feedPost: FeedPost,
+    onStatisticsItemClickListener:(StatisticItem)-> Unit
 ) {
     Card(
         shape = RoundedCornerShape(4.dp),
@@ -65,7 +67,9 @@ fun PostCard(
                 contentScale = ContentScale.FillWidth
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Statistics(feedPost.statistic)
+            Statistics(feedPost.statistic){
+                onStatisticsItemClickListener(it)
+            }
         }
     }
 
@@ -110,14 +114,18 @@ private fun PostHeader(feedPost: FeedPost) {
 
 @Composable
 private fun Statistics(
-    items:List<StatisticItem>
+    items:List<StatisticItem>,
+    onItemClickListener: (StatisticItem) -> Unit
 ) {
     Row() {
         Row(modifier = Modifier.weight(1f)) {
             val itemViews = items.getItemByType(StatisticType.VIEWS)
             IconWithText(
                 iconResId = R.drawable.ic_view_count,
-                text = itemViews.count.toString()
+                text = itemViews.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(itemViews)
+                }
             )
         }
         Row(
@@ -129,15 +137,24 @@ private fun Statistics(
             val itemLikes = items.getItemByType(StatisticType.LIKES)
             IconWithText(
                 iconResId = R.drawable.ic_share,
-                text = itemShares.count.toString()
+                text = itemShares.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(itemShares)
+                }
             )
             IconWithText(
                 iconResId = R.drawable.ic_comment,
-                text = itemComments.count.toString()
+                text = itemComments.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(itemComments)
+                }
             )
             IconWithText(
                 iconResId = R.drawable.ic_like,
-                text = itemLikes.count.toString()
+                text = itemLikes.count.toString(),
+                onItemClickListener = {
+                    onItemClickListener(itemLikes)
+                }
             )
         }
     }
@@ -150,9 +167,14 @@ private fun List<StatisticItem>.getItemByType(type:StatisticType):StatisticItem 
 @Composable
 private fun IconWithText(
     iconResId: Int,
-    text: String
+    text: String,
+    onItemClickListener: ()-> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable {
+            onItemClickListener()
+        }
+        ) {
         Icon(
             painter = painterResource(id = iconResId),
             contentDescription = null,
