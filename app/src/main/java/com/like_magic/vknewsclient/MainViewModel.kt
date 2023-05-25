@@ -5,26 +5,48 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.StatisticItem
-import java.lang.IllegalStateException
 
-class MainViewModel:ViewModel() {
+class MainViewModel : ViewModel() {
 
-    private val _feedPost = MutableLiveData(FeedPost())
-    val feedPost:LiveData<FeedPost>
-        get() = _feedPost
+    private val sourceList = mutableListOf<FeedPost>().apply {
+        repeat(30){
+            add(
+                FeedPost(id = it)
+            )
+        }
+    }
+    private val _feedPosts = MutableLiveData<List<FeedPost>>(sourceList)
+    val feedPosts: LiveData<List<FeedPost>>
+        get() = _feedPosts
 
-    fun updateCount(item:StatisticItem){
-        val oldStatics = feedPost.value?.statistic ?: throw IllegalStateException()
-        val newStatistics = oldStatics.toMutableList().apply {
-            replaceAll{oldItem ->
-                if(oldItem.type == item.type){
+    fun updateCount(feedPost: FeedPost, item: StatisticItem) {
+        val oldPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
+        val oldStatistics = feedPost.statistic
+        val newStatistic = oldStatistics.toMutableList().apply {
+            replaceAll { oldItem ->
+                if (oldItem.type == item.type) {
                     oldItem.copy(count = oldItem.count + 1)
-                }else {
+                } else {
                     oldItem
                 }
             }
         }
-        _feedPost.value = feedPost.value?.copy(statistic = newStatistics)
+        val newFeedPost = feedPost.copy(statistic = newStatistic)
+        _feedPosts.value = oldPosts.apply {
+            replaceAll {
+                if(it.id == newFeedPost.id){
+                    newFeedPost
+                }else{
+                    it
+                }
+            }
+        }
+    }
+
+    fun remove(feedPost: FeedPost){
+        val oldPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
+        oldPosts.remove(feedPost)
+        _feedPosts.value = oldPosts
     }
 
 }

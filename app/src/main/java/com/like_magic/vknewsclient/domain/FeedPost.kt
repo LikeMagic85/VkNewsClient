@@ -3,6 +3,7 @@ package com.like_magic.vknewsclient.domain
 import com.like_magic.vknewsclient.R
 
 data class FeedPost(
+    val id:Int = 0,
     val groupName: String = "/dev/null",
     val publicationTime:String = "14:00",
     val avatar:Int = R.drawable.ic_launcher_background,
