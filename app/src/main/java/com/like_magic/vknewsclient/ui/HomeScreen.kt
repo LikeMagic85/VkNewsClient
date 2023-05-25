@@ -1,5 +1,6 @@
 package com.like_magic.vknewsclient.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -14,16 +15,47 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.like_magic.vknewsclient.MainViewModel
+import com.like_magic.vknewsclient.domain.FeedPost
+
+@Composable
+fun HomeScreen(paddingValues: PaddingValues, viewModel: MainViewModel){
+    val screenState = viewModel.screenState.observeAsState(HomeScreenState.Initial)
+    when(val currentState = screenState.value){
+        is HomeScreenState.Posts -> {
+            FeedPosts(posts = currentState.posts, viewModel = viewModel, paddingValues = paddingValues)
+        }
+
+        is HomeScreenState.Comments -> {
+            CommentsScreen(
+                feedPost = currentState.feedPost,
+                comments = currentState.comments,
+                onBackPressed = {
+                    viewModel.closeComments()
+                }
+            )
+            BackHandler {
+                viewModel.closeComments()
+            }
+        }
+
+        is HomeScreenState.Initial -> {
+
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(paddingValues: PaddingValues, viewModel: MainViewModel){
-    val feedPosts = viewModel.feedPosts.observeAsState(listOf())
+private fun FeedPosts(
+    posts:List<FeedPost>,
+    viewModel: MainViewModel,
+    paddingValues: PaddingValues
+){
     LazyColumn(
         modifier = Modifier.padding(paddingValues)
     ) {
         items(
-            items = feedPosts.value,
+            items = posts,
             key = { it.id }
         ) { feedPost ->
             val dismissState = rememberDismissState()
@@ -45,8 +77,8 @@ fun HomeScreen(paddingValues: PaddingValues, viewModel: MainViewModel){
                     onShareClickListener = {statisticItem ->
                         viewModel.updateCount(feedPost, statisticItem)
                     },
-                    onCommentClickListener = {statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
+                    onCommentClickListener = {
+                        viewModel.showComments(feedPost)
                     },
                     onLikeClickListener = {statisticItem ->
                         viewModel.updateCount(feedPost, statisticItem)

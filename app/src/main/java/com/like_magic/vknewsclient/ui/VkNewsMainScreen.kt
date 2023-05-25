@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.like_magic.vknewsclient.MainViewModel
 import com.like_magic.vknewsclient.navigation.AppNavGraph
+import com.like_magic.vknewsclient.navigation.NavigationItem
 
 import com.like_magic.vknewsclient.navigation.rememberNavigationState
 
