@@ -12,12 +12,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.like_magic.vknewsclient.MainViewModel
+import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.navigation.AppNavGraph
 import com.like_magic.vknewsclient.navigation.NavigationItem
 
@@ -25,9 +28,12 @@ import com.like_magic.vknewsclient.navigation.rememberNavigationState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen() {
 
     val navigationState = rememberNavigationState()
+    val commentsToPost:MutableState<FeedPost?> = remember {
+        mutableStateOf(null)
+    }
     Scaffold(
         bottomBar = {
             NavigationBar(
@@ -68,7 +74,19 @@ fun MainScreen(viewModel: MainViewModel) {
         AppNavGraph(
             navHostController = navigationState.navHostController,
             homeScreenContent = {
-                HomeScreen(paddingValues = paddingValues, viewModel = viewModel)
+                if(commentsToPost.value == null){
+                    HomeScreen(
+                        paddingValues = paddingValues,
+                        onCommentClickListener = {
+                            commentsToPost.value = it
+                        }
+                    )
+                }else {
+                    CommentsScreen {
+                        commentsToPost.value = null
+                    }
+                }
+
             },
             favoriteScreenContent = {
 
