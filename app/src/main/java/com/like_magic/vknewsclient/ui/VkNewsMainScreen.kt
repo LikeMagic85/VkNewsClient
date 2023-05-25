@@ -17,15 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.like_magic.vknewsclient.MainViewModel
 import com.like_magic.vknewsclient.navigation.AppNavGraph
+
+import com.like_magic.vknewsclient.navigation.rememberNavigationState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
 
-    val navHostController = rememberNavController()
+    val navigationState = rememberNavigationState()
     Scaffold(
         bottomBar = {
             NavigationBar(
@@ -35,12 +36,14 @@ fun MainScreen(viewModel: MainViewModel) {
             ) {
                 val items =
                     listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
-                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 items.forEach { item ->
                     NavigationBarItem(
                         selected = currentRoute == item.screen.route,
-                        onClick = { navHostController.navigate(item.screen.route) },
+                        onClick = {
+                            navigationState.navigateTo(item.screen.route)
+                        },
                         icon = {
                             Icon(item.icon, contentDescription = null)
                         },
@@ -62,7 +65,7 @@ fun MainScreen(viewModel: MainViewModel) {
         }
     ) { paddingValues ->
         AppNavGraph(
-            navHostController = navHostController,
+            navHostController = navigationState.navHostController,
             homeScreenContent = {
                 HomeScreen(paddingValues = paddingValues, viewModel = viewModel)
             },
