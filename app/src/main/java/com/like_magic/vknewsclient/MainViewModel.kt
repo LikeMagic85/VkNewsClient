@@ -19,6 +19,7 @@ class MainViewModel : ViewModel() {
     val feedPosts: LiveData<List<FeedPost>>
         get() = _feedPosts
 
+
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
         val oldPosts = _feedPosts.value?.toMutableList() ?: mutableListOf()
         val oldStatistics = feedPost.statistic
