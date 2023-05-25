@@ -9,21 +9,24 @@ import com.like_magic.vknewsclient.R
 
 sealed class NavigationItem(
     val screen: Screen,
-    val titleResId:Int,
-    val icon:ImageVector
+    val titleResId: Int,
+    val icon: ImageVector
 ) {
-    object Home: NavigationItem(
-        screen = Screen.HomeScreen,
+
+    object Home : NavigationItem(
+        screen = Screen.Home,
         titleResId = R.string.navigation_item_main,
         icon = Icons.Outlined.Home
     )
-    object Favorite: NavigationItem(
-        screen = Screen.FavoriteScreen,
+
+    object Favourite : NavigationItem(
+        screen = Screen.Favourite,
         titleResId = R.string.navigation_item_favorite,
         icon = Icons.Outlined.Favorite
     )
-    object Profile: NavigationItem(
-        screen = Screen.ProfileScreen,
+
+    object Profile : NavigationItem(
+        screen = Screen.Profile,
         titleResId = R.string.navigation_item_profile,
         icon = Icons.Outlined.Person
     )

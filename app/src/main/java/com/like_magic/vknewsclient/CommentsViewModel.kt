@@ -7,16 +7,16 @@ import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.PostComment
 import com.like_magic.vknewsclient.ui.CommentsScreenState
 
-class CommentsViewModel : ViewModel() {
+class CommentsViewModel(feedPost: FeedPost) : ViewModel() {
 
     private val _screenState = MutableLiveData<CommentsScreenState>(CommentsScreenState.Initial)
     val screenState: LiveData<CommentsScreenState>
         get() = _screenState
     init {
-        loadComments(FeedPost())
+        loadComments(feedPost)
     }
 
-    fun loadComments(feedPost: FeedPost) {
+    private fun loadComments(feedPost: FeedPost) {
         val comments = mutableListOf<PostComment>().apply {
             repeat(10) {
                 add(PostComment(id = it, authorName = "Author Name"))

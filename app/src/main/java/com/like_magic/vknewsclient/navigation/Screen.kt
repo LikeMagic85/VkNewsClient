@@ -1,15 +1,20 @@
 package com.like_magic.vknewsclient.navigation
 
-sealed class Screen (
-    val route:String
-){
-    object HomeScreen:Screen(ROUTE_HOME_SCREEN)
-    object FavoriteScreen:Screen(ROUTE_FAVORITE_SCREEN)
-    object ProfileScreen:Screen(ROUTE_PROFILE_SCREEN)
+sealed class Screen(
+    val route: String
+) {
+    object NewsFeed : Screen(ROUTE_NEWS_FEED)
+    object Favourite : Screen(ROUTE_FAVOURITE)
+    object Profile : Screen(ROUTE_PROFILE)
+    object Home: Screen(ROUTE_HOME)
+    object Comments: Screen(ROUTE_COMMENTS)
 
     private companion object {
-        const val ROUTE_HOME_SCREEN = "home screen"
-        const val ROUTE_FAVORITE_SCREEN = "favorite screen"
-        const val ROUTE_PROFILE_SCREEN = "profile screen"
+
+        const val ROUTE_HOME = "home"
+        const val ROUTE_COMMENTS = "comments"
+        const val ROUTE_NEWS_FEED = "news_feed"
+        const val ROUTE_FAVOURITE = "favourite"
+        const val ROUTE_PROFILE = "profile"
     }
 }

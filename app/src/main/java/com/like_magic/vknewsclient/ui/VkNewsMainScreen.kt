@@ -19,10 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.navigation.AppNavGraph
 import com.like_magic.vknewsclient.navigation.NavigationItem
+import com.like_magic.vknewsclient.navigation.Screen
 
 import com.like_magic.vknewsclient.navigation.rememberNavigationState
 
@@ -42,14 +44,18 @@ fun MainScreen() {
 
             ) {
                 val items =
-                    listOf(NavigationItem.Home, NavigationItem.Favorite, NavigationItem.Profile)
+                    listOf(NavigationItem.Home, NavigationItem.Favourite, NavigationItem.Profile)
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
                 items.forEach { item ->
+                    val selected = navBackStackEntry?.destination?.hierarchy?.any{
+                        it.route == item.screen.route
+                    } ?: false
                     NavigationBarItem(
-                        selected = currentRoute == item.screen.route,
+                        selected = selected,
                         onClick = {
-                            navigationState.navigateTo(item.screen.route)
+                            if(!selected){
+                                navigationState.navigateTo(item.screen.route)
+                            }
                         },
                         icon = {
                             Icon(item.icon, contentDescription = null)
@@ -73,26 +79,28 @@ fun MainScreen() {
     ) { paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = {
-                if(commentsToPost.value == null){
-                    HomeScreen(
-                        paddingValues = paddingValues,
-                        onCommentClickListener = {
-                            commentsToPost.value = it
-                        }
-                    )
-                }else {
-                    CommentsScreen {
-                        commentsToPost.value = null
+            newsFeedScreenContent = {
+                HomeScreen(
+                    paddingValues = paddingValues,
+                    onCommentClickListener = {
+                        commentsToPost.value = it
+                        navigationState.navigateTo(Screen.Comments.route)
                     }
-                }
-
+                )
             },
-            favoriteScreenContent = {
+            favouriteScreenContent = {
 
             },
             profileScreenContent = {
 
+            },
+            commentsScreenContent = {
+                CommentsScreen(
+                    feedPost = commentsToPost.value!!,
+                    onBackPressed = {
+                        navigationState.navHostController.popBackStack()
+                    }
+                )
             }
         )
     }

@@ -30,17 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.like_magic.vknewsclient.CommentsViewModel
+import com.like_magic.vknewsclient.CommentsViewModelFactory
+import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.PostComment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    onBackPressed:()->Unit
+    onBackPressed: () -> Unit,
+    feedPost: FeedPost
 ) {
-    val viewModel:CommentsViewModel = viewModel()
+    val viewModel: CommentsViewModel = viewModel(factory = CommentsViewModelFactory(feedPost))
     val screenState = viewModel.screenState.observeAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
-    when(currentState){
+    when (currentState) {
         is CommentsScreenState.Comments -> {
             Scaffold(
                 topBar = {
