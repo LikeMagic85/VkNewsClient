@@ -14,7 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.like_magic.vknewsclient.PostsViewModel
+import com.like_magic.vknewsclient.viewmodels.PostsViewModel
 import com.like_magic.vknewsclient.domain.FeedPost
 
 @Composable
@@ -22,7 +22,7 @@ fun HomeScreen(
     paddingValues: PaddingValues,
     onCommentClickListener: (FeedPost) -> Unit
 ){
-    val viewModel:PostsViewModel = viewModel()
+    val viewModel: PostsViewModel = viewModel()
     val screenState = viewModel.screenState.observeAsState(PostsScreenState.Initial)
     when(val currentState = screenState.value){
         is PostsScreenState.Posts -> {

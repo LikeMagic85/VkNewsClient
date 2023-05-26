@@ -29,8 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.like_magic.vknewsclient.CommentsViewModel
-import com.like_magic.vknewsclient.CommentsViewModelFactory
+import com.like_magic.vknewsclient.viewmodels.CommentsViewModel
+import com.like_magic.vknewsclient.viewmodels.CommentsViewModelFactory
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.PostComment
 
