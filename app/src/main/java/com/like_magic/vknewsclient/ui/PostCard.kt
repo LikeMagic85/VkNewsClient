@@ -33,7 +33,6 @@ import com.like_magic.vknewsclient.R
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.StatisticItem
 import com.like_magic.vknewsclient.domain.StatisticType
-import java.lang.IllegalStateException
 
 @Composable
 fun PostCard(

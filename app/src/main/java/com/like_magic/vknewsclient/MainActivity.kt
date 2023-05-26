@@ -2,9 +2,16 @@ package com.like_magic.vknewsclient
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.like_magic.vknewsclient.ui.LoginScreen
 import com.like_magic.vknewsclient.ui.MainScreen
 import com.like_magic.vknewsclient.ui.theme.VkNewsClientTheme
+import com.like_magic.vknewsclient.viewmodels.MainViewModel
+import com.vk.api.sdk.VK
+import com.vk.api.sdk.auth.VKScope
 
 class MainActivity : ComponentActivity() {
 
@@ -13,7 +20,23 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             VkNewsClientTheme {
-                MainScreen()
+                val viewModel:MainViewModel = viewModel()
+                val authState = viewModel.authState.observeAsState(AuthState.Initial)
+                val launcher =
+                    rememberLauncherForActivityResult(contract = VK.getVKAuthActivityResultContract()) {
+                        viewModel.performAuthResult(it)
+                    }
+                when(authState.value){
+                    is AuthState.NotAuthorized ->{
+                        LoginScreen {
+                            launcher.launch(listOf(VKScope.WALL))
+                        }
+                    }
+                    AuthState.Authorized -> {
+                        MainScreen()
+                    }
+                    AuthState.Initial -> {}
+                }
             }
         }
     }

@@ -14,8 +14,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.like_magic.vknewsclient.viewmodels.PostsViewModel
 import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.viewmodels.PostsViewModel
 
 @Composable
 fun HomeScreen(
