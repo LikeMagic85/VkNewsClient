@@ -2,11 +2,13 @@ package com.like_magic.vknewsclient.domain
 
 
 data class FeedPost(
-    val id: String,
+    val id: Long,
+    val groupId: Long,
     val groupName: String,
     val publicationTime: String,
     val avatarUrl: String,
     val contentText: String,
     val imageUrl: String?,
-    val statistic: List<StatisticItem>
+    val statistic: List<StatisticItem>,
+    val isLiked: Boolean
 )
