@@ -1,7 +1,6 @@
 package com.like_magic.vknewsclient.presentation.news
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.like_magic.vknewsclient.R
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.StatisticItem
@@ -59,13 +59,11 @@ fun PostCard(
                 text = feedPost.contentText
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Image(
-                painter = painterResource(
-                    id = R.drawable.post_content_image
-                ), contentDescription = null,
+            AsyncImage(
+                model = feedPost.imageUrl,
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp),
+                    .fillMaxWidth(),
                 contentScale = ContentScale.FillWidth
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -88,11 +86,11 @@ private fun PostHeader(feedPost: FeedPost) {
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        AsyncImage(
+            model = feedPost.avatarUrl,
             modifier = Modifier
                 .size(50.dp)
                 .clip(shape = CircleShape),
-            painter = painterResource(id = feedPost.avatar),
             contentDescription = "Group logo"
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -193,7 +191,7 @@ private fun IconWithText(
         Text(
             text = text,
             color = MaterialTheme.colorScheme.onSecondary,
-            fontSize = 16.sp
+            fontSize = 14.sp
         )
     }
 }
