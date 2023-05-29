@@ -4,9 +4,6 @@ import com.like_magic.vknewsclient.data.models.NewsFeedResponseDto
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.StatisticItem
 import com.like_magic.vknewsclient.domain.StatisticType
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import kotlin.math.absoluteValue
 
 class NewsFeedMapper {
@@ -22,7 +19,7 @@ class NewsFeedMapper {
             val feedPost = FeedPost(
                 id = post.id,
                 groupName = group.name,
-                publicationTime = mapTimeStampToDate(post.date * 1000),
+                publicationTime = post.date.toString(),
                 avatarUrl = group.imageUrl,
                 contentText = post.text,
                 imageUrl = post.attachments?.firstOrNull()?.photo?.photoUrls?.lastOrNull()?.url,
@@ -40,9 +37,5 @@ class NewsFeedMapper {
         return result
     }
 
-    private fun mapTimeStampToDate(timeStamp:Long):String{
-        val date = Date(timeStamp)
-        return SimpleDateFormat("d MMMM yyyy, hh:mm", Locale.getDefault()).format(date)
-    }
 
 }
