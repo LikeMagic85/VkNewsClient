@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.ui
+package com.like_magic.vknewsclient.presentation.comments
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.PostComment
-import com.like_magic.vknewsclient.viewmodels.CommentsViewModel
-import com.like_magic.vknewsclient.viewmodels.CommentsViewModelFactory
+import com.like_magic.vknewsclient.presentation.viewmodels.CommentsViewModel
+import com.like_magic.vknewsclient.presentation.viewmodels.CommentsViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.ui
+package com.like_magic.vknewsclient.presentation.news
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

@@ -1,9 +1,9 @@
-package com.like_magic.vknewsclient.viewmodels
+package com.like_magic.vknewsclient.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.like_magic.vknewsclient.AuthState
+import com.like_magic.vknewsclient.presentation.main.AuthState
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
 

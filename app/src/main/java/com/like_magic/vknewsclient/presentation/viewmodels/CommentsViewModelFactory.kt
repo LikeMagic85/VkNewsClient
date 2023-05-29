@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.viewmodels
+package com.like_magic.vknewsclient.presentation.viewmodels
 
 
 import androidx.lifecycle.ViewModel

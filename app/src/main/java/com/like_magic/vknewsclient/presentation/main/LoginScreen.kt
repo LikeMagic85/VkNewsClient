@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.ui
+package com.like_magic.vknewsclient.presentation.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

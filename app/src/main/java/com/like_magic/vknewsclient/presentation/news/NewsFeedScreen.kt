@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.ui
+package com.like_magic.vknewsclient.presentation.news
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.like_magic.vknewsclient.domain.FeedPost
-import com.like_magic.vknewsclient.viewmodels.PostsViewModel
+import com.like_magic.vknewsclient.presentation.viewmodels.PostsViewModel
 
 @Composable
-fun HomeScreen(
+fun NewsFeedScreen(
     paddingValues: PaddingValues,
     onCommentClickListener: (FeedPost) -> Unit
 ){

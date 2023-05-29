@@ -1,11 +1,11 @@
-package com.like_magic.vknewsclient.viewmodels
+package com.like_magic.vknewsclient.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.PostComment
-import com.like_magic.vknewsclient.ui.CommentsScreenState
+import com.like_magic.vknewsclient.presentation.comments.CommentsScreenState
 
 class CommentsViewModel(feedPost: FeedPost) : ViewModel() {
 

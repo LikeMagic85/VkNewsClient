@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.ui
+package com.like_magic.vknewsclient.presentation.main
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,6 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.like_magic.vknewsclient.navigation.AppNavGraph
 import com.like_magic.vknewsclient.navigation.NavigationItem
 import com.like_magic.vknewsclient.navigation.rememberNavigationState
+import com.like_magic.vknewsclient.presentation.comments.CommentsScreen
+import com.like_magic.vknewsclient.presentation.news.NewsFeedScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +74,7 @@ fun MainScreen() {
         AppNavGraph(
             navHostController = navigationState.navHostController,
             newsFeedScreenContent = {
-                HomeScreen(
+                NewsFeedScreen(
                     paddingValues = paddingValues,
                     onCommentClickListener = {
                         navigationState.navigateToComment(it)
