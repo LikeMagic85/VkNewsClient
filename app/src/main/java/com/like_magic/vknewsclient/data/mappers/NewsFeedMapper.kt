@@ -1,9 +1,14 @@
 package com.like_magic.vknewsclient.data.mappers
 
+import com.like_magic.vknewsclient.data.models.CommentsResponseDto
 import com.like_magic.vknewsclient.data.models.NewsFeedResponseDto
 import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.PostComment
 import com.like_magic.vknewsclient.domain.StatisticItem
 import com.like_magic.vknewsclient.domain.StatisticType
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 class NewsFeedMapper {
@@ -37,5 +42,27 @@ class NewsFeedMapper {
         return result
     }
 
+    fun mapResponseToComments(response: CommentsResponseDto): List<PostComment> {
+        val result = mutableListOf<PostComment>()
+        val comments = response.content.comments
+        val profiles = response.content.profiles
+        for (comment in comments) {
+            if (comment.text.isBlank()) continue
+            val author = profiles.firstOrNull { it.id == comment.authorId } ?: continue
+            val postComment = PostComment(
+                id = comment.id,
+                authorName = "${author.firstName} ${author.lastName}",
+                avatarUrl =  author.avatarUrl,
+                commentText = comment.text,
+                publicationTime = mapTimestampToDate(comment.date)
+            )
+            result.add(postComment)
+        }
+        return result
+    }
 
+    private fun mapTimestampToDate(timestamp: Long): String {
+        val date = Date(timestamp * 1000)
+        return SimpleDateFormat("d MMMM yyyy, hh:mm", Locale.getDefault()).format(date)
+    }
 }

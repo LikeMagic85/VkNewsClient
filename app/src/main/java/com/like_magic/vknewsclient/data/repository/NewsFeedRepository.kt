@@ -4,6 +4,7 @@ import android.app.Application
 import com.like_magic.vknewsclient.data.mappers.NewsFeedMapper
 import com.like_magic.vknewsclient.data.network.ApiFactory
 import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.PostComment
 import com.like_magic.vknewsclient.domain.StatisticItem
 import com.like_magic.vknewsclient.domain.StatisticType
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
@@ -62,5 +63,23 @@ class NewsFeedRepository(application: Application) {
         val newPost = feedPost.copy(statistic = newStatistics, isLiked = !feedPost.isLiked)
         val postIndex = _feedPosts.indexOf(feedPost)
         _feedPosts[postIndex] = newPost
+    }
+
+    suspend fun deletePost(feedPost: FeedPost) {
+        apiService.ignorePost(
+            accessToken = getAccessToken(),
+            ownerId = feedPost.groupId,
+            postId = feedPost.id
+        )
+        _feedPosts.remove(feedPost)
+    }
+
+    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
+        val comments = apiService.getComments(
+            accessToken = getAccessToken(),
+            ownerId = feedPost.groupId,
+            postId = feedPost.id
+        )
+        return mapper.mapResponseToComments(comments)
     }
 }

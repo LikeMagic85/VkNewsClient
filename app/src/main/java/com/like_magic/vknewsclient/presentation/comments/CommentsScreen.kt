@@ -1,7 +1,7 @@
 package com.like_magic.vknewsclient.presentation.comments
 
+import android.app.Application
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,10 +26,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.like_magic.vknewsclient.domain.FeedPost
 import com.like_magic.vknewsclient.domain.PostComment
 import com.like_magic.vknewsclient.presentation.viewmodels.CommentsViewModel
@@ -40,7 +43,10 @@ fun CommentsScreen(
     onBackPressed: () -> Unit,
     feedPost: FeedPost
 ) {
-    val viewModel: CommentsViewModel = viewModel(factory = CommentsViewModelFactory(feedPost))
+    val viewModel: CommentsViewModel = viewModel(factory = CommentsViewModelFactory(
+        feedPost,
+        LocalContext.current.applicationContext as Application
+    ))
     val screenState = viewModel.screenState.observeAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
     when (currentState) {
@@ -49,7 +55,7 @@ fun CommentsScreen(
                 topBar = {
                     TopAppBar(
                         title = {
-                            Text(text = "Comments for FeedPost Id: ${currentState.feedPost.id}")
+                            Text(text = "Comments")
                         },
                         navigationIcon = {
                             IconButton(onClick = { onBackPressed() }) {
@@ -98,10 +104,11 @@ private fun CommentItem(comment: PostComment) {
                 vertical = 4.dp
             )
     ) {
-        Image(
-            modifier = Modifier.size(24.dp),
-            painter = painterResource(id = comment.avatar),
-            contentDescription = null
+        AsyncImage(
+            model = comment.avatarUrl,
+            modifier = Modifier.size(36.dp)
+                .clip(CircleShape),
+            contentDescription = null,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column {

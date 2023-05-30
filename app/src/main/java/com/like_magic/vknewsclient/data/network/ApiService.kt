@@ -1,5 +1,6 @@
 package com.like_magic.vknewsclient.data.network
 
+import com.like_magic.vknewsclient.data.models.CommentsResponseDto
 import com.like_magic.vknewsclient.data.models.LikesCountResponseDto
 import com.like_magic.vknewsclient.data.models.NewsFeedResponseDto
 import retrofit2.http.GET
@@ -31,4 +32,18 @@ interface ApiService {
         @Query("owner_id") ownerId: Long,
         @Query("item_id") postId: Long
     ): LikesCountResponseDto
+
+    @GET("newsfeed.ignoreItem?v=5.131&type=wall")
+    suspend fun ignorePost(
+        @Query("access_token") accessToken: String,
+        @Query("owner_id") ownerId: Long,
+        @Query("item_id") postId: Long
+    )
+
+    @GET("wall.getComments?v=5.131&extended=1&fields=photo_100")
+    suspend fun getComments(
+        @Query("access_token") accessToken: String,
+        @Query("owner_id") ownerId: Long,
+        @Query("post_id") postId: Long
+    ): CommentsResponseDto
 }

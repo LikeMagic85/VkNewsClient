@@ -3,6 +3,7 @@ package com.like_magic.vknewsclient.presentation.news
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -41,8 +42,11 @@ fun NewsFeedScreen(
                 nextDataIsLoading = currentState.nextDataIsLoading
             )
         }
-        is PostsScreenState.Initial -> {
-
+        is PostsScreenState.Initial -> {}
+        is PostsScreenState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = DarkBlue)
+            }
         }
     }
 }
@@ -76,12 +80,6 @@ private fun FeedPosts(
                 PostCard(
                     modifier = Modifier.padding(8.dp),
                     feedPost = feedPost,
-                    onViewClickListener = {statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    },
-                    onShareClickListener = {statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    },
                     onCommentClickListener = {
                         onCommentClickListener(feedPost)
                     },
