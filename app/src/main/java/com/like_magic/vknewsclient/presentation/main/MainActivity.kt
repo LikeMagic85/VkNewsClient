@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.like_magic.vknewsclient.domain.entity.AuthState
 import com.like_magic.vknewsclient.ui.theme.VkNewsClientTheme
 import com.like_magic.vknewsclient.presentation.viewmodels.MainViewModel
 import com.vk.api.sdk.VK
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 val authState = viewModel.authState.collectAsState(AuthState.Initial)
                 val launcher =
                     rememberLauncherForActivityResult(contract = VK.getVKAuthActivityResultContract()) {
-                        viewModel.performAuthResult(it)
+                        viewModel.performAuthResult()
                     }
                 when(authState.value){
                     is AuthState.NotAuthorized ->{

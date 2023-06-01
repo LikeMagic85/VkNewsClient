@@ -4,7 +4,7 @@ package com.like_magic.vknewsclient.presentation.viewmodels
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.entity.FeedPost
 
 
 class CommentsViewModelFactory(

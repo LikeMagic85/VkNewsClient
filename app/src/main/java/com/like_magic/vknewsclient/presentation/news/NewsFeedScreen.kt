@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.entity.FeedPost
 import com.like_magic.vknewsclient.presentation.viewmodels.PostsViewModel
 import com.like_magic.vknewsclient.ui.theme.DarkBlue
 

@@ -2,31 +2,24 @@ package com.like_magic.vknewsclient.presentation.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.like_magic.vknewsclient.presentation.main.AuthState
-import com.vk.api.sdk.VKPreferencesKeyValueStorage
-import com.vk.api.sdk.auth.VKAccessToken
-import com.vk.api.sdk.auth.VKAuthenticationResult
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.lifecycle.viewModelScope
+import com.like_magic.vknewsclient.data.repository.NewsFeedRepositoryImpl
+import com.like_magic.vknewsclient.domain.usecases.CheckAuthStateUseCase
+import com.like_magic.vknewsclient.domain.usecases.GetAuthStateFlowUseCase
+import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _authState = MutableStateFlow<AuthState>(AuthState.Initial)
-    val authState: StateFlow<AuthState>
-        get() = _authState
+    private val repository = NewsFeedRepositoryImpl(application)
+    private val getAuthStateFlowUseCase = GetAuthStateFlowUseCase(repository)
+    private val checkAuthStateUseCase =CheckAuthStateUseCase(repository)
 
-    init {
-        val storage = VKPreferencesKeyValueStorage(application)
-        val token = VKAccessToken.restore(storage)
-        val loggedIn = token != null && token.isValid
-        _authState.value = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
-    }
+    val authState =   getAuthStateFlowUseCase()
 
-    fun performAuthResult(result: VKAuthenticationResult) {
-        if (result is VKAuthenticationResult.Success) {
-            _authState.value = AuthState.Authorized
-        } else {
-            _authState.value = AuthState.NotAuthorized
+
+    fun performAuthResult() {
+        viewModelScope.launch {
+            checkAuthStateUseCase()
         }
     }
 }

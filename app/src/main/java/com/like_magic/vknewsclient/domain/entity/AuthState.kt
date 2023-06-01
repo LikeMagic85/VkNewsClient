@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.presentation.main
+package com.like_magic.vknewsclient.domain.entity
 
 sealed class AuthState {
 

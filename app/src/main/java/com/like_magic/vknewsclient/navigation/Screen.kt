@@ -2,7 +2,7 @@ package com.like_magic.vknewsclient.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.entity.FeedPost
 
 sealed class Screen(
     val route: String

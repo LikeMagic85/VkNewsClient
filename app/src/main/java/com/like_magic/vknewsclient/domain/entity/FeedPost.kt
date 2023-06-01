@@ -1,4 +1,4 @@
-package com.like_magic.vknewsclient.domain
+package com.like_magic.vknewsclient.domain.entity
 
 
 data class FeedPost(

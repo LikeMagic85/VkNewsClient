@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.entity.FeedPost
 
 @Composable
 fun AppNavGraph(

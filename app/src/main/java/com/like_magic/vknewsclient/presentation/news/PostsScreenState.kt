@@ -1,6 +1,6 @@
 package com.like_magic.vknewsclient.presentation.news
 
-import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.domain.entity.FeedPost
 
 
 sealed class PostsScreenState {
@@ -10,6 +10,5 @@ sealed class PostsScreenState {
     data class Posts(
         val posts: List<FeedPost>,
         val nextDataIsLoading: Boolean = false
-    ) :
-        PostsScreenState()
+    ) :PostsScreenState()
 }

@@ -3,8 +3,12 @@ package com.like_magic.vknewsclient.presentation.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.like_magic.vknewsclient.data.repository.NewsFeedRepository
-import com.like_magic.vknewsclient.domain.FeedPost
+import com.like_magic.vknewsclient.data.repository.NewsFeedRepositoryImpl
+import com.like_magic.vknewsclient.domain.entity.FeedPost
+import com.like_magic.vknewsclient.domain.usecases.ChangeLikeStatusUseCase
+import com.like_magic.vknewsclient.domain.usecases.DeletePostUseCase
+import com.like_magic.vknewsclient.domain.usecases.GetRecommendationsUseCase
+import com.like_magic.vknewsclient.domain.usecases.LoadNextRecommendationsUseCase
 import com.like_magic.vknewsclient.extensions.mergeWith
 import com.like_magic.vknewsclient.presentation.news.PostsScreenState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,8 +19,13 @@ import kotlinx.coroutines.launch
 
 class PostsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = NewsFeedRepository(getApplication())
-    private val recommendationFlow = repository.recommendation
+    private val repository = NewsFeedRepositoryImpl(getApplication())
+    private val getRecommendationsUseCase = GetRecommendationsUseCase(repository)
+    private val loadNextRecommendationsUseCase = LoadNextRecommendationsUseCase(repository)
+    private val changeLikeStatusUseCase = ChangeLikeStatusUseCase(repository)
+    private val deletePostUseCase = DeletePostUseCase(repository)
+
+    private val recommendationFlow = getRecommendationsUseCase()
     private val loadNextDataFlow = MutableSharedFlow<PostsScreenState>()
     val screenState = recommendationFlow
         .filter { it.isNotEmpty() }
@@ -32,21 +41,19 @@ class PostsViewModel(application: Application) : AndroidViewModel(application) {
                     nextDataIsLoading = true
                 )
             )
-            repository.loadNextRecommendations()
+            loadNextRecommendationsUseCase()
         }
     }
 
     fun changeLikeStatus(feedPost: FeedPost){
         viewModelScope.launch {
-            repository.changeLikeStatus(feedPost)
-
+            changeLikeStatusUseCase(feedPost)
         }
     }
 
     fun remove(feedPost: FeedPost){
         viewModelScope.launch {
-            repository.deletePost(feedPost)
-
+            deletePostUseCase(feedPost)
         }
     }
 

@@ -1,7 +1,7 @@
 package com.like_magic.vknewsclient.presentation.comments
 
-import com.like_magic.vknewsclient.domain.FeedPost
-import com.like_magic.vknewsclient.domain.PostComment
+import com.like_magic.vknewsclient.domain.entity.FeedPost
+import com.like_magic.vknewsclient.domain.entity.PostComment
 
 
 sealed class CommentsScreenState{
