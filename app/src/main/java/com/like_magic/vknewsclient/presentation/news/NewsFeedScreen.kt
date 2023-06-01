@@ -16,7 +16,7 @@ import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,7 +31,7 @@ fun NewsFeedScreen(
     onCommentClickListener: (FeedPost) -> Unit
 ){
     val viewModel: PostsViewModel = viewModel()
-    val screenState = viewModel.screenState.observeAsState(PostsScreenState.Initial)
+    val screenState = viewModel.screenState.collectAsState(PostsScreenState.Initial)
     when(val currentState = screenState.value){
         is PostsScreenState.Posts -> {
             FeedPosts(
